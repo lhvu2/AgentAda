@@ -2,7 +2,10 @@ import os, json
 from dotenv import load_dotenv
 from pprint import pprint
 import pandas as pd
-import exp_configs
+
+import agentada.exp_configs as exp_configs
+
+#import exp_configs
 
 # Load environment variables at the start
 load_dotenv()
@@ -225,7 +228,7 @@ if __name__ == "__main__":
         "--exp_group",
         "-e",
         type=str,
-        default="insights",
+        default="insights_w_skills",
         choices=exp_configs.EXP_GROUPS.keys(),
         help="Experiment group to run from exp_configs.EXP_GROUPS",
     )

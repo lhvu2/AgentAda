@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentada"
+version = "0.1.0"
+description = "Multi-agent architecture for SQL/insight generation with shared memory and orchestration."
+authors = [
+    { name = "Long Vu" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+    "openai>=1.0.0",
+    "python-dotenv",
+    "requests",
+    "pydantic>=2.0",
+    "numpy",
+    "tqdm",
+    "anyio",
+    "rich",
+    "matplotlib",
+    "statsmodels",
+    "scikit-learn",
+    "Markdown",
+    "beautifulsoup4",
+    "transformers",
+    "sentence-transformers",
+    "evaluate"
+]
+
+[tool.setuptools]
+# 👉 This is the important mapping:
+# Treat the directory "src" as the code for the package named "agentada"
+package-dir = { "agentada" = "src" }
+packages = ["agentada"]

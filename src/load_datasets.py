@@ -2,13 +2,24 @@ import pandas as pd
 import json
 from src.utils import check_and_fix_dataset
 
+import os
+from os.path import join, basename
+
+# Get the absolute path of the current script
+script_path = os.path.abspath(__file__)
+
+# Get the directory containing the script
+script_directory = os.path.dirname(script_path)
+
+print(f"The directory of the current script is: {script_directory}")
+
 
 def get_dataset(challenge="toy"):
     """
     returns dataset as a list of dictionaries containing questions, metadata, goal, persona, insights, and table
     """
-    base_path = "data/jsons"
-    base_data_path = "data/csvs"
+    base_path = join(script_directory, "../data/jsons")
+    base_data_path = join(script_directory, "../data/csvs")
 
     # get the challenge
     print("challenge", challenge)

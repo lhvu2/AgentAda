@@ -239,7 +239,7 @@ class Agent:
                 dataset_description=self.data_description
         )
 
-        return plot,insight, predicted_skill
+        return plot, insight, predicted_skill
 
     def score_insights(self, pred_insights, gt_insights, method="g-eval"):
         """

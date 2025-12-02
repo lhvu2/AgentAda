@@ -5,6 +5,16 @@ import pandas as pd
 
 import agentada.exp_configs as exp_configs
 
+from os.path import join, basename
+
+# Get the absolute path of the current script
+script_path = os.path.abspath(__file__)
+
+# Get the directory containing the script
+script_directory = os.path.dirname(script_path)
+
+print(f"The directory of the current script is: {script_directory}")
+
 #import exp_configs
 
 # Load environment variables at the start
@@ -146,7 +156,8 @@ def main(exp_dict, savedir, save_dir_categories, reset=False):
             ## ==============================
             # get the prediction
             gt_questions = data_dict["questions"]
-            gt_insights = data_dict["insight"]
+            #gt_insights = data_dict["insight"]
+            gt_insights = [e['answer'] for e in data_dict["questions"]]
             gt_skills = [
                 q["skill"]
                 .replace("Collaborative Filtering", "collaborativefiltering")
@@ -228,7 +239,7 @@ if __name__ == "__main__":
         "--exp_group",
         "-e",
         type=str,
-        default="insights_w_skills",
+        default="insights_w_skills_only",
         choices=exp_configs.EXP_GROUPS.keys(),
         help="Experiment group to run from exp_configs.EXP_GROUPS",
     )

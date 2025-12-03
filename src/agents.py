@@ -168,6 +168,7 @@ class Agent:
                 skill_flag=skill_flag,
                 ques_no=i,
                 summary_flag=summary_flag,
+                skill_name=skill_text
             )
             # Save the insight
             with open(
@@ -199,7 +200,7 @@ class Agent:
         #     table, self.goal, self.persona
         # )
 
-    def get_insights(self, answer_list, insight_categories):
+    def get_insights(self, answer_list, insight_categories: str = ""):
         """
         Get the insight based on the list of answers
         """

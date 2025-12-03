@@ -19,7 +19,16 @@ import traceback
 from src.utils import get_llm_response, get_llm_response_with_schema, load_prompt
 from pydantic import BaseModel
 
-llm_client = OpenAI()
+#llm_client = OpenAI()
+import openai
+import os
+
+llm_client = openai.OpenAI(
+    api_key=os.environ["IBM_LITELLM_API_KEY"],
+    base_url=os.environ["IBM_LITELLM_URL"] # LiteLLM Proxy is OpenAI compatible, Read More: https://docs.litellm.ai/docs/proxy/user_keys
+)
+litellm_model = "Azure/gpt-4o"
+
 generic_insight_flag = 1
 
 
@@ -107,7 +116,7 @@ def gen_analytics_code_plot(
             summary_prompt = load_prompt('skill_summart.txt', **summary_prompt_inputs)
             # Call the LLM to summarize the skill exemplar
             response = llm_client.chat.completions.create(
-                model=model,
+                model=litellm_model,
                 messages=[{"role": "user", "content": summary_prompt}],
                 temperature=0.0,
             )
@@ -134,11 +143,12 @@ def gen_analytics_code_plot(
     # local_vars = {"df": df, "plt": plt}
     try:
         skill_check_flag = False
-        for i in range(3):
+        for i in range(1):
             try:
                 # Get response from LLM
                 response = llm_client.chat.completions.create(
-                    model=model,
+                    #model=model,
+                    model=litellm_model,
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.0,
                 )
@@ -183,6 +193,7 @@ def gen_analytics_code_plot(
                 The generated code is: {generated_code}
                 The error is: {str(e)}"""
                 prompt += error_prompt
+                stats = [] # original code does not have stats
                 continue
 
         # Save the generated code to code.py
@@ -199,7 +210,7 @@ def gen_analytics_code_plot(
         base64_image = encode_image(plot_path)
         answer_response = (
             llm_client.chat.completions.create(
-                model=model,
+                model=litellm_model,
                 messages=[
                     {
                         "role": "system",
@@ -241,7 +252,7 @@ def gen_analytics_code_plot(
         with open(os.path.join(savedir, "error.txt"), "w") as f:
             f.write(error_message)
 
-        return None, None
+        return None, None, None
 
 
 def predict_insight_categories(
@@ -270,7 +281,8 @@ def predict_insight_categories(
 
     response = (
         llm_client.chat.completions.create(
-            model=model,
+            #model=model,
+            model=litellm_model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": category_prompt},
@@ -289,7 +301,8 @@ def summarize_answer(question, answer, model="gpt-4o"):
     summarize_answer_prompt = load_prompt('answer_summarize.txt', **summarize_answer_prompt_inputs)
     response = (
         llm_client.chat.completions.create(
-            model=model,
+            #model=model,
+            model=litellm_model,
             messages=[
                 {"role": "user", "content": summarize_answer_prompt},
             ],
@@ -321,7 +334,8 @@ def get_analytical_insight(
 
     response = (
         llm_client.chat.completions.create(
-            model=model,
+            #model=model,
+            model=litellm_model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": insight_prompt},

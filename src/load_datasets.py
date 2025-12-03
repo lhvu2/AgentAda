@@ -14,7 +14,7 @@ script_directory = os.path.dirname(script_path)
 print(f"The directory of the current script is: {script_directory}")
 
 
-def get_dataset(challenge="toy"):
+def get_dataset(challenge="toy", debug: bool=False):
     """
     returns dataset as a list of dictionaries containing questions, metadata, goal, persona, insights, and table
     """
@@ -40,6 +40,12 @@ def get_dataset(challenge="toy"):
         goal_dict = json.load(open(f"{base_path}/{_id}/goal.json", "r"))
         question_list = json.load(open(f"{base_path}/{_id}/questions.json", "r"))
         # insight_dict = json.load(open(f"{base_path}/{_id}/insights.json", "r"))
+
+        if debug:
+            import random
+            random.seed(42)
+            #random.shuffle(question_list)
+            question_list = question_list[0:2]
 
         data_dict = {}
         data_dict["id"] = _id

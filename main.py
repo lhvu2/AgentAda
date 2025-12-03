@@ -43,11 +43,11 @@ def main(exp_dict, savedir, save_dir_categories, reset=False):
     ## ==============================
     # TODO: Load the data Amirhossein
     # the dataset is a list of dictionaries containing questions, metadata, goal, persona, insights, and table
-    data_list = load_datasets.get_dataset(challenge=exp_dict["challenge"])
+    data_list = load_datasets.get_dataset(challenge=exp_dict["challenge"], debug=True)
 
     score_list = []
     all_skill_scores = []
-    for i, data_dict in enumerate(data_list):
+    for i, data_dict in enumerate(data_list[0:1]):
         print(f"Working on experiment {i+1}/{len(data_list)}")
         score_dict = {}
 
@@ -185,6 +185,7 @@ def main(exp_dict, savedir, save_dir_categories, reset=False):
                 skill_flag=exp_dict["with_skills"],
                 questions=gt_questions,
                 skills=gt_skills,
+                #skill_name=gt_skills,
             )
             # print(pred_insights)
             # break

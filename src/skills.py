@@ -16,9 +16,17 @@ from pydantic import BaseModel
 # Load environment variables at the start
 load_dotenv()
 
-api_key = 'API_KEY'
-llm_client = OpenAI(api_key=api_key)
+# api_key = 'API_KEY'
+# llm_client = OpenAI(api_key=api_key)
 
+import openai
+import os
+
+llm_client = openai.OpenAI(
+    api_key=os.environ["IBM_LITELLM_API_KEY"],
+    base_url=os.environ["IBM_LITELLM_URL"] # LiteLLM Proxy is OpenAI compatible, Read More: https://docs.litellm.ai/docs/proxy/user_keys
+)
+model = "Azure/gpt-4o"
 
 class Filename(BaseModel):
     file_name: str

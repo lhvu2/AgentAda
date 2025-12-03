@@ -3,13 +3,21 @@ import hashlib
 import pandas as pd
 from pydantic import BaseModel
 
-llm_client = OpenAI()
+#llm_client = OpenAI()
+import openai
+import os
 
+llm_client = openai.OpenAI(
+    api_key=os.environ["IBM_LITELLM_API_KEY"],
+    base_url=os.environ["IBM_LITELLM_URL"] # LiteLLM Proxy is OpenAI compatible, Read More: https://docs.litellm.ai/docs/proxy/user_keys
+)
+model = "Azure/gpt-4o"
 
 def get_llm_response(prompt: str):
     # Get response from LLM
     response = llm_client.chat.completions.create(
-        model="gpt-4o-mini",
+        #model="gpt-4o-mini",
+        model=model,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.0,
     )
@@ -22,7 +30,8 @@ def get_llm_response(prompt: str):
 def get_llm_response_with_schema(prompt: str, schema: BaseModel):
     # Get response from LLM
     response = llm_client.beta.chat.completions.parse(
-        model="gpt-4o-mini",
+        #model="gpt-4o-mini",
+        model=model,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.0,
         response_format=schema,
